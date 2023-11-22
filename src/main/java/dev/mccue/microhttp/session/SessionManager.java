@@ -131,5 +131,9 @@ public final class SessionManager {
             this.customizeCookie = Objects.requireNonNull(customizeCookie);
             return this;
         }
+
+        public SessionManager build() {
+            return new SessionManager(this);
+        }
     }
 }
