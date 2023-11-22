@@ -1,35 +1,115 @@
 package dev.mccue.microhttp.session;
 
-import java.util.HashMap;
-import java.util.Map;
+import dev.mccue.json.Json;
+import dev.mccue.json.JsonDecoder;
+import dev.mccue.json.JsonEncodable;
+import dev.mccue.json.JsonObject;
+
+import java.util.Objects;
 import java.util.Optional;
 
-public final class SessionData {
-    private final Map<String, String> data;
-    private SessionData(Map<String, String> data) {
-        this.data = Map.copyOf(data);
+public record SessionData(JsonObject value) {
+    public SessionData(JsonObject value) {
+        this.value = Objects.requireNonNullElse(value, JsonObject.empty());
     }
 
-    public static SessionData of(Map<String, String> data) {
-        return new SessionData(data);
-    }
-
-    public Map<String, String> asMap() {
-        return data;
-    }
-
-    public Optional<String> get(String key) {
-        return Optional.ofNullable(data.get(key));
+    public <T> Optional<T> get(String key, JsonDecoder<? extends T> decoder) {
+        return JsonDecoder.optionalField(value, key, decoder);
     }
 
     public SessionData with(String key, String value) {
-        var data = new HashMap<>(this.data);
-        data.put(key, value);
-        return of(data);
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
     }
 
-    @Override
-    public String toString() {
-        return "SessionData[data=" + data + "]";
+    public SessionData with(String key, int value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, long value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, float value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, double value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, boolean value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, Integer value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, Long value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, Float value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, Double value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, Boolean value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
+    }
+
+    public SessionData with(String key, JsonEncodable value) {
+        return new SessionData(
+                Json.objectBuilder(this.value)
+                        .put(key, value)
+                        .build()
+        );
     }
 }

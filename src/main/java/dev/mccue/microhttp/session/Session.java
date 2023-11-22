@@ -1,6 +1,7 @@
 package dev.mccue.microhttp.session;
 
-import java.util.Map;
+import dev.mccue.json.Json;
+
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -11,7 +12,7 @@ public record Session(SessionKey key, SessionData data) {
     }
 
     public Session() {
-        this(SessionKey.random(), SessionData.of(Map.of()));
+        this(SessionKey.random(), new SessionData(Json.emptyObject()));
     }
 
     public Session update(Function<SessionData, SessionData> f) {

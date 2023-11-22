@@ -2,6 +2,7 @@ package dev.mccue.microhttp.session;
 
 import dev.mccue.json.Json;
 import dev.mccue.json.JsonDecoder;
+import dev.mccue.json.JsonObject;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -149,14 +150,12 @@ final class CookieSessionStore implements SessionStore {
         return null;
     }
 
-    static Json serialize(SessionData sessionData) {
-        var object = Json.objectBuilder();
-        sessionData.asMap().forEach(object::put);
-        return object.build();
+    static JsonObject serialize(SessionData sessionData) {
+        return sessionData.value();
     }
 
     static SessionData deserialize(Json json) {
-        return SessionData.of(JsonDecoder.object(json, JsonDecoder::string));
+        return new SessionData(JsonDecoder.object(json));
     }
 
     final byte[] key;
@@ -181,14 +180,6 @@ final class CookieSessionStore implements SessionStore {
 
     @Override
     public Optional<SessionKey> delete(SessionKey key) {
-        return Optional.of(new SessionKey(seal(this.key, SessionData.of(Map.of()))));
+        return Optional.of(new SessionKey(seal(this.key, new SessionData(Json.emptyObject()))));
     }
-
-   /* public static void main(String[] args) {
-        var key = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        var sealed = seal(key, SessionData.of(Map.of("apple", "red")));
-        System.out.println(sealed);
-        var unsealed = unseal(key, sealed);
-        System.out.println(unsealed);
-    }*/
 }
