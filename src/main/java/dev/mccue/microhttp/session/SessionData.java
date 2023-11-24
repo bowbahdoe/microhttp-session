@@ -5,12 +5,17 @@ import dev.mccue.json.JsonDecoder;
 import dev.mccue.json.JsonEncodable;
 import dev.mccue.json.JsonObject;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 
 public record SessionData(JsonObject value) {
     public SessionData(JsonObject value) {
         this.value = Objects.requireNonNullElse(value, JsonObject.empty());
+    }
+
+    public Optional<Json> get(String key) {
+        return get(key, j -> j);
     }
 
     public <T> Optional<T> get(String key, JsonDecoder<? extends T> decoder) {
@@ -111,5 +116,11 @@ public record SessionData(JsonObject value) {
                         .put(key, value)
                         .build()
         );
+    }
+
+    public SessionData without(String key) {
+        var m = new HashMap<>(this.value);
+        m.remove(key);
+        return new SessionData(JsonObject.of(m));
     }
 }
