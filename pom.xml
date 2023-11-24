@@ -102,6 +102,10 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <source>21</source>
+                            <additionalOptions>--enable-preview</additionalOptions>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
